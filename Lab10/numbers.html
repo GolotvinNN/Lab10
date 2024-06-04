@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prime Numbers</title>
+</head>
+<body>
+    <div id="prime-numbers"></div>
+
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script>
+        function isPrime(num) {
+            if (num <= 1) return false;
+            if (num <= 3) return true;
+        
+            if (num % 2 === 0 || num % 3 === 0) return false;
+        
+            let i = 5;
+            while (i * i <= num) {
+                if (num % i === 0 || num % (i + 2) === 0) return false;
+                i += 6;
+            }
+        
+            return true;
+        }
+
+        const PrimeNumbers = () => {
+            const [primes, setPrimes] = React.useState([]);
+
+            React.useEffect(() => {
+                const interval = setInterval(() => {
+                    let nextPrime = primes.length > 0 ? primes[primes.length - 1] + 1 : 2;
+                    while (!isPrime(nextPrime)) {
+                        nextPrime++;
+                    }
+                    setPrimes(prevPrimes => [...prevPrimes, nextPrime]);
+                }, 1000);
+
+                return () => clearInterval(interval);
+            }, [primes]);
+
+            return React.createElement('div', null,
+                React.createElement('h2', null, 'Простые числа:'),
+                React.createElement('ul', null,
+                    primes.map(prime => React.createElement('li', { key: prime }, prime))
+                )
+            );
+        };
+
+        ReactDOM.render(React.createElement(PrimeNumbers), document.getElementById('prime-numbers'));
+    </script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Light</title>
+    <style>
+        .traffic-light {
+            width: 100px;
+            height: 300px;
+            border: 1px solid #000;
+            border-radius: 50%;
+        }
+        .light {
+            width: 80px;
+            height: 80px;
+            margin: 10px auto;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div id="traffic-light"></div>
+
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script>
+        const TrafficLight = () => {
+            const [color, setColor] = React.useState('red');
+
+            React.useEffect(() => {
+                const interval = setInterval(() => {
+                    setColor(prevColor => {
+                        switch (prevColor) {
+                            case 'red':
+                                return 'green';
+                            case 'green':
+                                return 'yellow';
+                            case 'yellow':
+                                return 'red';
+                            default:
+                                return 'red';
+                        }
+                    });
+                }, 3000);
+
+                return () => clearInterval(interval);
+            }, []);
+
+            return React.createElement('div', { className: 'traffic-light' },
+                React.createElement('div', { className: 'light', style: { backgroundColor: color === 'red' ? 'red' : 'gray' } }),
+                React.createElement('div', { className: 'light', style: { backgroundColor: color === 'yellow' ? 'yellow' : 'gray' } }),
+                React.createElement('div', { className: 'light', style: { backgroundColor: color === 'green' ? 'green' : 'gray' } })
+            );
+        };
+
+        ReactDOM.render(React.createElement(TrafficLight), document.getElementById('traffic-light'));
+    </script>
+</body>
+</html>

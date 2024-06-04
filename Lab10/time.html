@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reverse Timer</title>
+</head>
+<body>
+    <div id="timer"></div>
+
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script>
+        const Timer = () => {
+            const [count, setCount] = React.useState(10);
+
+            React.useEffect(() => {
+                const timer = setInterval(() => {
+                    setCount(prevCount => {
+                        if (prevCount === 0) {
+                            clearInterval(timer);
+                            return prevCount;
+                        } else {
+                            return prevCount - 1;
+                        }
+                    });
+                }, 1000);
+
+                return () => clearInterval(timer);
+            }, []);
+
+            return React.createElement('div', null, count);
+        };
+
+        ReactDOM.render(React.createElement(Timer), document.getElementById('timer'));
+    </script>
+</body>
+</html>

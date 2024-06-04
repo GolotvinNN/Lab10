@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinite Timer</title>
+</head>
+<body>
+    <div id="infinite-timer"></div>
+
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script>
+        const InfiniteTimer = () => {
+            const [count, setCount] = React.useState(0);
+            const [isRunning, setIsRunning] = React.useState(false);
+
+            React.useEffect(() => {
+                let timer;
+                if (isRunning) {
+                    timer = setInterval(() => {
+                        setCount(prevCount => prevCount + 1);
+                    }, 1000);
+                }
+
+                return () => clearInterval(timer);
+            }, [isRunning]);
+
+            const startTimer = () => {
+                setIsRunning(true);
+            };
+
+            const stopTimer = () => {
+                setIsRunning(false);
+            };
+
+            return React.createElement('div', null, 
+                React.createElement('div', null, count),
+                React.createElement('button', { onClick: startTimer }, '▶ Start'),
+                React.createElement('button', { onClick: stopTimer }, '■ Stop')
+            );
+        };
+
+        ReactDOM.render(React.createElement(InfiniteTimer), document.getElementById('infinite-timer'));
+    </script>
+</body>
+</html>
